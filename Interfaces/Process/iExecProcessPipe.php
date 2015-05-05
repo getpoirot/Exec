@@ -2,35 +2,23 @@
 namespace Poirot\Exec\Interfaces\Process;
 
 use Poirot\Stream\Interfaces\iStreamable;
+use Poirot\Exec\Interfaces\iExecDescriptor;
 
-interface iExecProcessPipe
+/**
+ * It's implement descriptor interface except of values
+ * values are initialized resource now, after exec
+ *
+ * - this made on ExecPro::exec method and injected
+ *   to iExecProcess
+ */
+interface iExecProcessPipe extends iExecDescriptor
 {
-    /*
-     The file descriptor numbers are not limited to 0, 1 and 2
-     you may specify any valid file descriptor number and it will
-     be passed to the child process. This allows your script to
-     interoperate with other scripts that run as "co-processes".
-     */
-    const XCDSC_STDIN  = 0;
-    const XCDSC_STDOUT = 1;
-    const XCDSC_STDERR = 2;
-
     /**
      * Is Pipes Resources Initialized Into Object?
      *
      * @return boolean
      */
     function isInitialized();
-
-    /**
-     * Set Descriptor Resource
-     *
-     * @param int      $number
-     * @param resource $value
-     *
-     * @return $this
-     */
-    function setDescriptor($number, $value);
 
     /**
      * Pipe To Specific Descriptor Number Resource

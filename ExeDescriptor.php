@@ -31,28 +31,33 @@ class ExeDescriptor implements iExecDescriptor
      */
     function setDescriptor($number, $value)
     {
-        if (is_object($value)) {
-            if (!$value instanceof iSResource)
-                throw new \InvalidArgumentException(sprintf(
-                    'Descriptor Object Value Must Instance Of iSResource but "%s" given.'
-                    , get_class($value)
-                ));
-
-            $value = $value->getRHandler();
-        }
-
-        // TODO Check for valid array
-
-        if (!is_array($value) || !is_resource($value))
-            throw new \InvalidArgumentException(sprintf(
-                'Descriptor Value Can Be iSResource Instance Or Array Or resource but "%s" given.'
-                , gettype($value)
-            ));
+        $this->_validateValue($value);
 
         $this->_descriptors[$number] = $value;
 
         return $this;
     }
+
+        protected function _validateValue($value)
+        {
+            if (is_object($value)) {
+                if (!$value instanceof iSResource)
+                    throw new \InvalidArgumentException(sprintf(
+                        'Descriptor Object Value Must Instance Of iSResource but "%s" given.'
+                        , get_class($value)
+                    ));
+
+                $value = $value->getRHandler();
+            }
+
+            // TODO Check for valid array
+
+            if (!is_array($value) || !is_resource($value))
+                throw new \InvalidArgumentException(sprintf(
+                    'Descriptor Value Can Be iSResource Instance Or Array Or resource but "%s" given.'
+                    , gettype($value)
+                ));
+        }
 
     /**
      * Get Descriptor Values,
@@ -78,5 +83,15 @@ class ExeDescriptor implements iExecDescriptor
     function getDescriptors()
     {
         return array_keys($this->_descriptors);
+    }
+
+    /**
+     * To Array
+     *
+     * @return array
+     */
+    function toArray()
+    {
+       return $this->_descriptors;
     }
 }

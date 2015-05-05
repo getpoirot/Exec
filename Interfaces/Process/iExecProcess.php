@@ -4,6 +4,22 @@ namespace Poirot\Exec\Interfaces\Process;
 interface iExecProcess
 {
     /**
+     * Set Proc Open Resource Handler
+     *
+     * @param resource $resource $resource
+     *
+     * @return $this
+     */
+    function setRhandler($resource);
+
+    /**
+     * Get Proc Open Resource Handler
+     *
+     * @return resource
+     */
+    function getRhandler();
+
+    /**
      * Get Process Pipes
      * include stdin, stdout, stderr
      *

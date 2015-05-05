@@ -6,7 +6,6 @@ use Poirot\Core\Entity;
 use Poirot\Core\Interfaces\EntityInterface;
 use Poirot\Core\OpenOptions;
 use Poirot\Exec\Interfaces\iExec;
-use Poirot\Exec\Interfaces\iExecDescriptor;
 use Poirot\Exec\Interfaces\Process\iExecProcess;
 
 class ExeProc implements iExec
@@ -38,7 +37,7 @@ class ExeProc implements iExec
      *   that will be runAn array with the environment variables
      *   for the command that will be run
      *
-     * @return EntityInterface
+     * @return Entity
      */
     function env()
     {
@@ -76,7 +75,7 @@ class ExeProc implements iExec
     /**
      * Pipe Descriptor
      *
-     * @return iExecDescriptor
+     * @return ExeDescriptor
      */
     function descriptor()
     {
@@ -89,14 +88,34 @@ class ExeProc implements iExec
     /**
      * Execute a command
      *
-     * @param string      $cmd
+     * @param string $cmd
      * @param null|string $cwd
      *
+     * @throws \Exception
      * @return iExecProcess
      */
     function exec($cmd, $cwd = null)
     {
+        ($cwd !== null) ?: $cwd = $this->getCwd();
 
+        $pipes   = [];
+        $process = proc_open(
+            escapeshellcmd($cmd)
+            , $this->descriptor()->toArray()
+            , $pipes
+            , $cwd
+            , $this->env()->borrow()
+            , $this->options()->toArray()
+        );
+
+        if (!is_resource($process))
+            throw new \Exception('Error While Opening Process');
+
+        // Build Pipe Initialized:
+        // TODO can use as method inside iExecProcessPipe
+        $procPipe = new ExeProcutedPipes($this->descriptor(), $pipes);
+
+        return new ExeProcuted($process, $procPipe);
     }
 
     /**
