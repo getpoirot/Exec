@@ -1,0 +1,22 @@
+{
+    "name": "poirot/exec",
+    "description": "Execute system commands.",
+    "type"       : "library",
+    "authors": [
+        {
+            "name": "Payam Naderi",
+            "email": "naderi.payam@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "poirot/core": "dev-master",
+        "poirot/stream": "dev-master"
+    },
+    "target-dir": "Poirot/Exec",
+    "autoload"  : {
+        "psr-0": {
+            "Poirot\\Exec": "."
+        }
+    }
+}
