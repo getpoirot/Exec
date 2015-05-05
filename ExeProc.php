@@ -2,6 +2,7 @@
 namespace Poirot\Exec;
 
 use Poirot\Core\AbstractOptions;
+use Poirot\Core\BuilderSetterTrait;
 use Poirot\Core\Entity;
 use Poirot\Core\Interfaces\EntityInterface;
 use Poirot\Core\OpenOptions;
@@ -10,6 +11,8 @@ use Poirot\Exec\Interfaces\Process\iExecProcess;
 
 class ExeProc implements iExec
 {
+    use BuilderSetterTrait;
+
     /**
      * @var EntityInterface
      */
@@ -29,6 +32,17 @@ class ExeProc implements iExec
      * @var OpenOptions
      */
     protected $_options;
+
+    /**
+     * Construct
+     *
+     * @param array $setter
+     */
+    function __construct(array $setter = null)
+    {
+       if ($setter !== null)
+           $this->setupFromArray($setter, true);
+    }
 
     /**
      * Default Environment Variables
