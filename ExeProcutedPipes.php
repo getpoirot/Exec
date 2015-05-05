@@ -2,10 +2,12 @@
 namespace Poirot\Exec;
 
 use Poirot\Exec\Interfaces\iExecDescriptor;
+use Poirot\Exec\Interfaces\Process\iExecProcessPipe;
 use Poirot\Stream\Interfaces\iStreamable;
 use Poirot\Stream\Streamable;
 
 class ExeProcutedPipes extends ExeDescriptor
+    implements iExecProcessPipe
 {
     /**
      * @var boolean
