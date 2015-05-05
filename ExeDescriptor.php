@@ -52,7 +52,7 @@ class ExeDescriptor implements iExecDescriptor
 
             // TODO Check for valid array
 
-            if (!is_array($value) || !is_resource($value))
+            if (!is_array($value) && !is_resource($value))
                 throw new \InvalidArgumentException(sprintf(
                     'Descriptor Value Can Be iSResource Instance Or Array Or resource but "%s" given.'
                     , gettype($value)
