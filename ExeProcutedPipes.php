@@ -4,6 +4,7 @@ namespace Poirot\Exec;
 use Poirot\Exec\Interfaces\iExecDescriptor;
 use Poirot\Exec\Interfaces\Process\iExecProcessPipe;
 use Poirot\Stream\Interfaces\iStreamable;
+use Poirot\Stream\SResource;
 use Poirot\Stream\Streamable;
 
 class ExeProcutedPipes extends ExeDescriptor
@@ -13,6 +14,12 @@ class ExeProcutedPipes extends ExeDescriptor
      * @var boolean
      */
     protected $_isInitialized = false;
+
+    /**
+     * @see to()
+     * @var array
+     */
+    protected $__cached_descriptors_stream = [];
 
     /**
      * Construct
@@ -44,6 +51,39 @@ class ExeProcutedPipes extends ExeDescriptor
     }
 
     /**
+     * stdin Proxy
+     *
+     * @throws \Exception
+     * @return iStreamable
+     */
+    function stdin()
+    {
+        return $this->to(self::XCDSC_STDIN);
+    }
+
+    /**
+     * stdout Proxy
+     *
+     * @throws \Exception
+     * @return iStreamable
+     */
+    function stdout()
+    {
+        return $this->to(self::XCDSC_STDOUT);
+    }
+
+    /**
+     * stderr Proxy
+     *
+     * @throws \Exception
+     * @return iStreamable
+     */
+    function stderr()
+    {
+        return $this->to(self::XCDSC_STDERR);
+    }
+
+    /**
      * Pipe To Specific Descriptor Number Resource
      *
      * - check initialized
@@ -56,17 +96,26 @@ class ExeProcutedPipes extends ExeDescriptor
      */
     function to($dscNum)
     {
+        if (!$this->isInitialized())
+            throw new \Exception("Pipes Not Initialized.");
+
+        if (isset($this->__cached_descriptors_stream[$dscNum]))
+            return $this->__cached_descriptors_stream[$dscNum];
+
         if (! in_array($dscNum, $this->getDescriptors()))
             throw new \Exception(sprintf(
                 'Descriptor With Number "%s" not found.'
                 , $dscNum
             ));
 
-        return new Streamable($this->getDescriptor($dscNum));
+        $stream = new Streamable(new SResource($this->getDescriptor($dscNum)));
+        $this->__cached_descriptors_stream[$dscNum] = $stream;
+
+        return $stream;
     }
 
     // New Implementation Of Parent:
-
+    // Used On self::setDescriptor() method
     protected function _validateValue($value)
     {
         if (!is_resource($value))
