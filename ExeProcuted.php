@@ -12,7 +12,7 @@ class ExeProcuted implements iExecProcess
     protected $_rHandler;
 
     /**
-     * @var iExecProcessPipe
+     * @var ExeProcutedPipes
      */
     protected $pipes;
 
@@ -57,7 +57,7 @@ class ExeProcuted implements iExecProcess
      * Get Process Pipes
      * include stdin, stdout, stderr
      *
-     * @return iExecProcessPipe
+     * @return ExeProcutedPipes
      */
     function pipes()
     {

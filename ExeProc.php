@@ -106,7 +106,7 @@ class ExeProc implements iExec
      * @param null|string $cwd
      *
      * @throws \Exception
-     * @return iExecProcess
+     * @return ExeProcuted
      */
     function exec($cmd, $cwd = null)
     {
