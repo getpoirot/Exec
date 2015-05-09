@@ -75,7 +75,7 @@ class ExeProcuted implements iExecProcess
     function close()
     {
         foreach($this->pipes()->getDescriptors() as $dscNum) {
-            // close all streams
+            $this->pipes()->to($dscNum)->getResource()->close();
         }
 
         proc_close($this->getRhandler());
