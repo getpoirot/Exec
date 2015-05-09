@@ -114,7 +114,7 @@ class ExeProc implements iExec
 
         $pipes   = [];
         $process = proc_open(
-            escapeshellcmd($cmd)
+            $cmd
             , $this->descriptor()->toArray()
             , $pipes
             , $cwd
