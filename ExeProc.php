@@ -119,7 +119,7 @@ class ExeProc implements iExec
             , $pipes
             , $cwd
             , $this->env()->borrow()
-            , $this->options()->toArray()
+            , $this->inOptions()->toArray()
         );
 
         if (!is_resource($process))
@@ -135,10 +135,10 @@ class ExeProc implements iExec
     /**
      * @return OpenOptions
      */
-    function options()
+    function inOptions()
     {
         if (!$this->_options)
-            $this->_options = self::optionsIns();
+            $this->_options = self::newOptions();
 
         return $this->_options;
     }
@@ -157,7 +157,7 @@ class ExeProc implements iExec
      *
      * @return AbstractOptions
      */
-    static function optionsIns()
+    static function newOptions()
     {
         return new OpenOptions();
     }

@@ -2,10 +2,10 @@
 namespace Poirot\Exec\Interfaces;
 
 use Poirot\Core\Interfaces\EntityInterface;
-use Poirot\Core\Interfaces\OptionsProviderInterface;
+use Poirot\Core\Interfaces\iOptionsProvider;
 use Poirot\Exec\Interfaces\Process\iExecProcess;
 
-interface iExec extends OptionsProviderInterface
+interface iExec extends iOptionsProvider
 {
     /**
      * The initial absolute working dir for the commands
