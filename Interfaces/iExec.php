@@ -1,11 +1,11 @@
 <?php
 namespace Poirot\Exec\Interfaces;
 
-use Poirot\Core\Interfaces\EntityInterface;
-use Poirot\Core\Interfaces\iOptionsProvider;
+use Poirot\Std\Interfaces\ipOptionsProvider;
 use Poirot\Exec\Interfaces\Process\iExecProcess;
+use Poirot\Std\Interfaces\Struct\iEntityData;
 
-interface iExec extends iOptionsProvider
+interface ipExec extends ipOptionsProvider
 {
     /**
      * The initial absolute working dir for the commands
@@ -37,7 +37,7 @@ interface iExec extends iOptionsProvider
      *   that will be runAn array with the environment variables
      *   for the command that will be run
      *
-     * @return EntityInterface
+     * @return iEntityData
      */
     function env();
 

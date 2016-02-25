@@ -1,20 +1,18 @@
 <?php
 namespace Poirot\Exec;
 
-use Poirot\Core\AbstractOptions;
-use Poirot\Core\BuilderSetterTrait;
-use Poirot\Core\Entity;
-use Poirot\Core\Interfaces\EntityInterface;
-use Poirot\Core\OpenOptions;
-use Poirot\Exec\Interfaces\iExec;
-use Poirot\Exec\Interfaces\Process\iExecProcess;
+use Poirot\Std\Interfaces\Struct\iEntityData;
+use Poirot\Std\SetterBuilderTrait;
+use Poirot\Exec\Interfaces\ipExec;
+use Poirot\Std\Struct\EntityData;
+use Poirot\Std\Struct\OpenOptionsData;
 
-class ExeProc implements iExec
+class ExeProc implements ipExec
 {
-    use BuilderSetterTrait;
+    use SetterBuilderTrait;
 
     /**
-     * @var EntityInterface
+     * @var iEntityData
      */
     protected $env;
 
@@ -29,7 +27,7 @@ class ExeProc implements iExec
     protected $_descriptor;
 
     /**
-     * @var OpenOptions
+     * @var OpenOptionsData
      */
     protected $_options;
 
@@ -51,12 +49,12 @@ class ExeProc implements iExec
      *   that will be runAn array with the environment variables
      *   for the command that will be run
      *
-     * @return Entity
+     * @return EntityData
      */
     function env()
     {
         if (!$this->env)
-            $this->env = new Entity();
+            $this->env = new EntityData;
 
         return $this->env;
     }
@@ -118,8 +116,8 @@ class ExeProc implements iExec
             , $this->descriptor()->toArray()
             , $pipes
             , $cwd
-            , $this->env()->borrow()
-            , $this->inOptions()->toArray()
+            , \Poirot\Std\iterator_to_array($this->env())
+            , \Poirot\Std\iterator_to_array($this->optsData())
         );
 
         if (!is_resource($process))
@@ -133,12 +131,12 @@ class ExeProc implements iExec
     }
 
     /**
-     * @return OpenOptions
+     * @return OpenOptionsData
      */
-    function inOptions()
+    function optsData()
     {
         if (!$this->_options)
-            $this->_options = self::newOptions();
+            $this->_options = self::newOptsData();
 
         return $this->_options;
     }
@@ -155,10 +153,12 @@ class ExeProc implements iExec
      *      $class = new Filesystem($opt);
      *   [/php]
      *
-     * @return AbstractOptions
+     * @param null|mixed $builder Builder Options as Constructor
+     *
+     * @return OpenOptionsData
      */
-    static function newOptions()
+    static function newOptsData($builder = null)
     {
-        return new OpenOptions();
+        return (new OpenOptionsData)->from($builder);
     }
 }
